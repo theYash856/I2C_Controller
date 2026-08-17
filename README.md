@@ -12,7 +12,7 @@ The repository provides a configurable Verilog implementation of the Inter-Integ
 - Supports single-byte and multi-byte transfers.
 - Implements `ACK`/`NACK` handling.
 - Supports mid-transaction disable.
-- Includes self-checking verification for top-level functionality.
+- Includes task-based, self-checking verification.
 
 ## 3. Working Principle
 
@@ -55,7 +55,7 @@ I2C_Controller/
 │   └── top_console.png
 │ 
 ├── waveforms/
-│   ├── clk_div_waveform.png
+│   ├── clk_divider_waveform.png
 │   ├── master_waveform.gif
 │   ├── slave_waveform.gif
 │   └── top_waveform.gif
@@ -79,7 +79,7 @@ I2C_Controller/
 | Module | Description |
 |:---:|:---:|
 | `I2C_Clock_Divider` | Generates the `SCL` clock and corresponding rising/falling edge ticks from the system clock. |
-| `I2C_Master` | Controls `START`/`STOP` generation, slave addressing, READ/WRITE transfers, `ACK`/`NACK` handling, and multi-byte communication. |
+| `I2C_Master` | Controls `START`/`STOP` generation, slave addressing, `READ`/`WRITE` transfers, `ACK`/`NACK` handling, and multi-byte communication. |
 | `I2C_Slave` | Detects `START`/`STOP` conditions, matches the received slave address, handles `ACK`/`NACK` responses, and transmits or receives data. |
 | `I2C_TOP` | Integrates the Master, Slave, and Clock Divider modules over the shared `SDA` and `SCL` lines. |
 
