@@ -16,15 +16,55 @@ The repository provides a configurable Verilog implementation of the Inter-Integ
 
 ## 3. Working Principle
 
-I²C uses two shared lines: `SDA` for data and `SCL` for the serial clock.. The Master begins communication with a `START` condition, followed by a **7-bit slave address** and `R/W` bit.
+I²C uses two shared lines: `SDA` for data and `SCL` for the serial clock. The Master begins communication with a `START` condition, followed by a **7-bit slave address** and `R/W` bit.
 
 The addressed Slave responds with an `ACK`. In a `WRITE`, the Master sends data to the Slave; in a `READ`, the Slave sends data to the Master. For multi-byte transfers, the `DATA` and `ACK` phases repeat as required.
 
 The transaction ends with a `STOP` condition, where `SDA` transitions from LOW to HIGH while `SCL` is HIGH.
 
-// Block diagram
+<div align = "center">
+
+![Working Diagram](images/working_principle.png)
+
+</div>
 
 ## 4. Repository Structure
+
+```text
+I2C_Controller/
+│
+├── src/
+│   ├── I2C_Clock_Divider.v
+│   ├── I2C_Master.v
+│   ├── I2C_Slave.v
+│   └── I2C_TOP.v
+│
+├── tb/
+│   ├── I2C_Clock_Divider_tb.v
+│   ├── I2C_Master_tb.v
+│   ├── I2C_Slave_tb.v
+│   └── I2C_TOP_tb.v
+│
+├── images/
+│   ├── working_principle.png
+│   ├── schematic.png
+│   ├── schematic_zoomed.png
+│   ├── clk_divider_console.png
+│   ├── master_console.png
+│   ├── slave_console.png
+│   └── top_console.png
+│ 
+├── waveforms/
+│   ├── clk_div_waveform.png
+│   ├── master_waveform.gif
+│   ├── slave_waveform.gif
+│   └── top_waveform.gif
+│
+├── README.md
+├── VERIFICATION.md
+└── LICENSE
+```
+
 
 ## 5. Configuration Parameters
 
@@ -46,9 +86,60 @@ The transaction ends with a `STOP` condition, where `SDA` transitions from LOW t
 ## 7. Verification
 
 > [!NOTE]
-> A detailed verification report covering the verification methodology, test cases, waveform analysis, debugging process, and final results is documented in [VERIFICATION.md](link).
+> A detailed verification report covering the verification methodology, test cases, waveform analysis, debugging process, and final results is documented in [VERIFICATION.md](https://github.com/theYash856/I2C_Controller/blob/main/VERIFICATION.md).
 
 ## 8. Simulation & Results
+
+### 8.1. RTL Schematic
+
+#### Top View
+
+<div align = "center">
+
+![RTL Schematic](images/schematic.png)
+
+</div>
+
+---
+
+#### Expanded View
+
+<div align = "center">
+
+![RTL Schematic Zoomed](images/schematic_zoomed.png)
+
+</div>
+
+---
+
+### 8.2. Integrated I²C Controller Waveform
+
+<div align="center">
+
+![Waveform Full View](waveforms/top_waveform.gif)
+
+</div>
+
+---
+
+### 8.3. Verification Summary
+
+The following console outputs summarise the final self-checking verification results for each I²C module.
+
+<table>
+  <tr>
+    <th>I²C Clock Divider</th>
+    <th>I²C Master</th>
+    <th>I²C Slave</th>
+    <th>I²C TOP</th>
+  </tr>
+  <tr>
+    <td><img src="images/clock_divider_console.png" width="250"></td>
+    <td><img src="images/master_console.png" width="250"></td>
+    <td><img src="images/slave_console.png" width="250"></td>
+    <td><img src="images/top_console.png" width="250"></td>
+  </tr>
+</table>
 
 ## 9. Key Learnings
 
