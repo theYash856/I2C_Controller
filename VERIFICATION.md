@@ -20,14 +20,15 @@ Each testbench follows a common verification architecture consisting of:
 - Clock and reset generation
 - DUT instantiation
 - Input stimulus generation
-- Output monitoring using (`$monitor`)
-- Waveform dumping using (`$dumpfile`) and (`$dumpvars`)
+- Output monitoring using `$monitor`
+- Waveform dumping using `$dumpfile` and `$dumpvars`
 - Reusable driver and checker tasks
 - Automated self-checking with PASS/FAIL reporting and a final verification summary
 
 ## 3. Verification Methodology
 
-The I²C Controller was verified using a bottom-up approach, where each module was validated independently before verifying the complete integrated design. <br>
+The I²C Controller was verified using a **bottom-up approach**, where each module was validated independently before verifying the complete integrated design. <br>
+
 The following sections summarise the functional test cases executed for each module along with their verification results.
 
 ## 4. Important I²C Concepts
@@ -39,6 +40,7 @@ Unlike protocols that use separate transmit and receive signals, I²C uses a sin
 ### 4.2. Open-Drain Communication
 
 I²C devices do not actively drive the `SDA` line HIGH. They either pull the line LOW or release it to a high-impedance state (`Z`). A pull-up resistor then restores the line to logic HIGH. <br>
+
 This allows multiple devices to safely share the same bus line.
 
 ### 4.3. Pull-Up Resistors
@@ -129,13 +131,59 @@ After every transmitted address or data byte, the receiving device responds duri
 >
 > 2. The shared `SDA` and `SCL` lines include pull-ups to model the idle HIGH state of the I²C bus when no device is actively pulling the line LOW.
 
-## 6. Waveform Analysis 
+## 6. Waveform Analysis
+
+### 6.1. I²C Clock Divider
+
+The Clock Divider waveform confirms that `SCL` remains HIGH while idle and toggles only when the divider is enabled during an active transaction. The `posedge_tick` and `negedge_tick` signals are asserted in synchronization with the corresponding transitions of `SCL`.
+
+<div align="center">
+
+![I2C Clock Divider Waveform](waveforms/clk_divider_waveform.png)
+
+</div>
+
+---
+
+### 6.2. I²C Master
+
+The Master waveform verifies the sequencing of the `START`, `ADDRESS`, `ACK`, `DATA`, and `STOP` phases. It also shows the Master changing or releasing `SDA` according to the current transaction phase while progressing through the internal FSM states.
+
+<div align="center">
+
+![I2C Master Waveform](waveforms/master_waveform.gif)
+
+</div>
+
+---
+
+### 6.3. I²C Slave
+
+The Slave waveform confirms correct detection of the transmitted address, acknowledgement behaviour, and data transfer in both `READ` and `WRITE` operations. The waveform also shows the Slave taking control of `SDA` only during the required acknowledgement and data-transmission phases.
+
+<div align="center">
+
+![I2C Slave Waveform](waveforms/slave_waveform.gif)
+
+</div>
+
+---
+
+### 6.4. I²C TOP
+
+The integrated waveform verifies end-to-end communication between the Master and Slave over the shared `SDA` and `SCL` bus. It confirms correct synchronization between the Clock Divider, Master FSM, and Slave FSM throughout the complete transaction sequence.
+
+<div align="center">
+
+![I2C TOP Waveform](waveforms/top_waveform.gif)
+
+</div>
 
 ## 7. Debugging Experience
 
 ### 7.1. Address Mismatch Verification Limitation
 
-While developing the integrated testbench, the Address_Match test worked correctly, but the Address_Mismatch case continued to behave unexpectedly regardless of the address applied.
+While developing the integrated testbench, the Address Match test worked correctly, but the Address Mismatch case continued to behave unexpectedly regardless of the address applied.
 
 **Root Cause**
 
