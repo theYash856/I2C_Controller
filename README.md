@@ -134,7 +134,7 @@ The following console outputs summarise the final self-checking verification res
     <th>I²C TOP</th>
   </tr>
   <tr>
-    <td><img src="images/clock_divider_console.png" width="250"></td>
+    <td><img src="images/clk_divider_console.png" width="250"></td>
     <td><img src="images/master_console.png" width="250"></td>
     <td><img src="images/slave_console.png" width="250"></td>
     <td><img src="images/top_console.png" width="250"></td>
